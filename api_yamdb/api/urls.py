@@ -1,5 +1,17 @@
+from django.urls import include, path
+from rest_framework.routers import SimpleRouter
+
+from .views import ReviewViewSet
+
 app_name = 'api-v1'
 
+router_api_v1 = SimpleRouter()
+router_api_v1.register(
+    r'titles/(?P<title_id>\d+)/rewies',
+    ReviewViewSet,
+    'review'
+)
+
 urlpatterns = [
-    
+    path('v1/', include(router_api_v1.urls)),
 ]
