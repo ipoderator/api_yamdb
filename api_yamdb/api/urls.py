@@ -7,7 +7,7 @@ app_name = 'api-v1'
 
 router_api_v1 = SimpleRouter()
 router_api_v1.register(
-    r'titles/(?P<title_id>\d+)/rewies',
+    r'titles/(?P<title_id>\d+)/reviews',
     ReviewViewSet,
     'review'
 )
