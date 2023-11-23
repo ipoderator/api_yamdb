@@ -1,7 +1,6 @@
 from rest_framework import serializers
 
 from reviews.models import Review
-from rest_framework.validators import UniqueTogetherValidator
 
 
 class ReviewSerializer(serializers.ModelSerializer):
@@ -36,9 +35,19 @@ class ReviewSerializer(serializers.ModelSerializer):
             'pub_date',
             'title',
         )
-        validators = [
-            UniqueTogetherValidator(
-                Review,
-                ('author', 'title')
+
+    def validate(self, attrs):
+        """
+        Validate that `author` and `title` pair is not in DB.
+        """
+        attrs['author'] = self.context['request'].user
+        attrs['title'] = self.context['request'].parser_context['kwargs'].get(
+            'title_id')
+        if Review.objects.filter(
+            author=attrs['author'],
+            title=attrs['title']
+        ):
+            raise serializers.ValidationError(
+                'User can have only one review for a single title.'
             )
-        ]
+        return attrs
