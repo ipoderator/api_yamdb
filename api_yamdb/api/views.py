@@ -11,6 +11,7 @@ class ReviewViewSet(viewsets.ModelViewSet):
 
     Only authenticated users can add new reviews.
     Users can edit only their own reviews.
+    Admins and moders can edit reviews of all users.
     """
 
     serializer_class = ReviewSerializer
