@@ -32,6 +32,14 @@ class ReviewViewSet(viewsets.ModelViewSet):
 
 
 class CommentViewSet(viewsets.ModelViewSet):
+    """
+    Comment model ViewsSet.
+
+    Only authenticated users can add new comments.
+    Users can edit only their own comments.
+    Admins and moders can edit coments of all users.
+    """
+
     serializer_class = CommentSerializer
     http_methods_names = [
         'get',
