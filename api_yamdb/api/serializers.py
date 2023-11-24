@@ -11,7 +11,6 @@ class ReviewSerializer(serializers.ModelSerializer):
     * id (read only);
     * text;
     * author (read only) - string username;
-    * title (read only);
     * score;
     * pub_date (read only).
     """
@@ -27,30 +26,29 @@ class ReviewSerializer(serializers.ModelSerializer):
             'id',
             'text',
             'author',
-            'title',
             'score',
             'pub_date',
         )
         read_only_fields = (
             'pub_date',
-            'title',
         )
 
     def validate(self, attrs):
         """
         Validate that `author` and `title` pair is not in DB.
         """
-        # attrs['author'] = self.context['request'].user
-        attrs['author'] = User.objects.get(pk=1)
-        attrs['title'] = self.context['request'].parser_context['kwargs'].get(
-            'title_id')
-        if Review.objects.filter(
-            author=attrs['author'],
-            title=attrs['title']
-        ):
-            raise serializers.ValidationError(
-                'User can have only one review for a single title.'
-            )
+        if self.context['request'].method == 'POST':
+            # attrs['author'] = self.context['request'].user
+            attrs['author'] = User.objects.get(pk=1)
+            attrs['title'] = self.context['request'].parser_context.get(
+                'kwargs').get('title_id')
+            if Review.objects.filter(
+                author=attrs['author'],
+                title=attrs['title']
+            ):
+                raise serializers.ValidationError(
+                    'User can have only one review for a single title.'
+                )
         return attrs
 
 
