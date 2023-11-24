@@ -16,7 +16,7 @@ class Review(models.Model):
     * score(Int) - title score, range from 1 to 10;
     * pub_date(DateTime) - review add date, auto on add.
 
-    User can have only one review for a single title.
+    User can have only one review for a single title. Ordered by `pub_date`.
     """
 
     SCORE_ERROR_MESSAGE = 'Score must be in range from 1 to 10'
@@ -70,7 +70,7 @@ class Comment(models.Model):
     * review(Int) - FK to Review model, cascade on delete;
     * pub_date(DateTime) - review add date, auto on add.
 
-    User can have only one review for a single title.
+    Ordered by `pub_date`.
     """
 
     text = models.TextField(
