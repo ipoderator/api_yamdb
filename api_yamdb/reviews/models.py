@@ -29,12 +29,13 @@ class Review(models.Model):
         related_name='reviews',
         verbose_name='Автор'
     )
-    title = models.ForeignKey(
-        Title,
-        models.CASCADE,
-        related_name='reviews',
-        verbose_name='Произведение'
-    )
+    # title = models.ForeignKey(
+    #     Title,
+    #     models.CASCADE,
+    #     related_name='reviews',
+    #     verbose_name='Произведение'
+    # )
+    title = models.IntegerField()
     score = models.IntegerField(
         'Оценка',
         validators=[
@@ -54,3 +55,45 @@ class Review(models.Model):
                 name='unique_author_title'
             )
         ]
+        ordering = (
+            '-pub_date',
+        )
+
+
+class Comment(models.Model):
+    """
+    Comment model.
+
+    Fields:
+    * text(Text) - comment text;
+    * author(Int) - FK to Users model, cascade on delete;
+    * review(Int) - FK to Review model, cascade on delete;
+    * pub_date(DateTime) - review add date, auto on add.
+
+    User can have only one review for a single title.
+    """
+
+    text = models.TextField(
+        'Текст'
+    )
+    author = models.ForeignKey(
+        User,
+        models.CASCADE,
+        related_name='comments',
+        verbose_name='Автор'
+    )
+    review = models.ForeignKey(
+        Review,
+        models.CASCADE,
+        related_name='comments',
+        verbose_name='Отзыв'
+    )
+    pub_date = models.DateTimeField(
+        'Дата публикации',
+        auto_now_add=True
+    )
+
+    class Meta:
+        ordering = (
+            '-pub_date',
+        )
