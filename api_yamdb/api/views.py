@@ -1,9 +1,8 @@
 from django.shortcuts import get_object_or_404
 from rest_framework import viewsets
-from rest_framework.pagination import PageNumberPagination
 
-from .serializers import ReviewSerializer
-from reviews.models import Title
+from .serializers import CommentSerializer, ReviewSerializer
+from reviews.models import Review, User
 
 
 class ReviewViewSet(viewsets.ModelViewSet):
@@ -15,7 +14,6 @@ class ReviewViewSet(viewsets.ModelViewSet):
     """
 
     serializer_class = ReviewSerializer
-    pagination_class = PageNumberPagination
     http_methods_names = [
         'get',
         'post',
@@ -28,5 +26,39 @@ class ReviewViewSet(viewsets.ModelViewSet):
     # permission_classes = ()
 
     def get_queryset(self):
-        title = get_object_or_404(Title, pk=self.kwargs['title_id'])
-        return title.reviews
+        # title = get_object_or_404(Title, pk=self.kwargs['title_id'])
+        # return title.reviews
+        return Review.objects.filter(title=self.kwargs['title_id'])
+
+
+class CommentViewSet(viewsets.ModelViewSet):
+    serializer_class = CommentSerializer
+    http_methods_names = [
+        'get',
+        'post',
+        'patch',
+        'delete',
+        'head',
+        'options',
+        'trace'
+    ]
+    # permission_classes = ()
+
+    def get_queryset(self):
+        review = get_object_or_404(
+            Review,
+            pk=self.kwargs['review_id'],
+            title=self.kwargs['title_id']
+        )
+        return review.comments.all()
+
+    def perform_create(self, serializer):
+        return serializer.save(
+            # author=self.request.user,
+            author=User.objects.get(pk=1),
+            review=get_object_or_404(
+                Review,
+                pk=self.kwargs['review_id'],
+                title=self.kwargs['title_id']
+            )
+        )
