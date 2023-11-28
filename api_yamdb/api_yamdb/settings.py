@@ -24,8 +24,13 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-
+    'django_filters',
     'rest_framework',
+
+    'api.apps.ApiConfig',
+    'reviews.apps.ReviewsConfig',
+    'import_export',
+
     'rest_framework_simplejwt',
 
     'api.apps.ApiConfig',
@@ -111,6 +116,16 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 STATICFILES_DIRS = ((BASE_DIR / 'static/'),)
+
+STATIC_ROOT = BASE_DIR / '/home/ipoderator/api_yamdb/api_yamdb/static/data'
+
+REST_FRAMEWORK = {
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',    
+    "PAGE_SIZE": 10,
+    'DEFAULT_FILTER_BACKENDS': [
+        'django_filters.rest_framework.DjangoFilterBackend'
+    ]
+}
 
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
