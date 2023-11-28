@@ -27,14 +27,12 @@ INSTALLED_APPS = [
     'django_filters',
     'rest_framework',
 
-    'api.apps.ApiConfig',
     'reviews.apps.ReviewsConfig',
     'import_export',
 
     'rest_framework_simplejwt',
 
     'api.apps.ApiConfig',
-    'reviews.apps.ReviewsConfig',
     'users.apps.UsersConfig',
 ]
 
@@ -126,7 +124,7 @@ REST_FRAMEWORK = {
     
     'DEFAULT_FILTER_BACKENDS': [
         'django_filters.rest_framework.DjangoFilterBackend'
-    ]
+    ],
 
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.IsAuthenticated',

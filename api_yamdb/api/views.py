@@ -6,7 +6,7 @@ from rest_framework import filters, viewsets
 from api.filters import TitleFilter
 from api.serializers import (
     CategorySerializer,
-    CommentSerializer
+    CommentSerializer,
     GenreSerializer,
     ReviewSerializer,
     TitleGetSerializer,
@@ -69,17 +69,17 @@ class CommentViewSet(viewsets.ModelViewSet):
         )
 
 
-class CategoryViewSet(viewsets.ModelsViewSet):
+class CategoryViewSet(viewsets.ModelViewSet):
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
-    permission_classes = (,)
+    # permission_classes = ()
     filter_backends = (filters.SearchFilter,)
 
 
 class GenreViewSet(viewsets.ModelViewSet):
     queryset = Genre.objects.all()
     serializer_class = GenreSerializer
-    permission_classes = (,)
+    # permission_classes = ()
     filter_backends = (filters.SearchFilter,)
 
 
@@ -88,7 +88,7 @@ class TitleViewSet(viewsets.ModelViewSet):
         rating=Avg('reviews__score')
     )
     serializer_class = TitleSerializer
-    permission_classes = (,)
+    # permission_classes = ()
     filter_backends = (DjangoFilterBackend,)
     filter_class = TitleFilter
 
