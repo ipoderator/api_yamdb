@@ -1,8 +1,24 @@
+from django.db.models import Avg
 from django.shortcuts import get_object_or_404
-from rest_framework import viewsets
+from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework import filters, viewsets
 
-from .serializers import CommentSerializer, ReviewSerializer
-from reviews.models import Review, User
+from api.filters import TitleFilter
+from api.serializers import (
+    CategorySerializer,
+    CommentSerializer
+    GenreSerializer,
+    ReviewSerializer,
+    TitleGetSerializer,
+    TitleSerializer
+)
+from reviews.models import (
+    Category,
+    Comment,
+    Genre,
+    Review,
+    Title
+)
 
 
 class ReviewViewSet(viewsets.ModelViewSet):
@@ -18,9 +34,8 @@ class ReviewViewSet(viewsets.ModelViewSet):
     # permission_classes = ()
 
     def get_queryset(self):
-        # title = get_object_or_404(Title, pk=self.kwargs['title_id'])
-        # return title.reviews
-        return Review.objects.filter(title=self.kwargs['title_id'])
+        title = get_object_or_404(Title, pk=self.kwargs['title_id'])
+        return title.reviews.all()
 
 
 class CommentViewSet(viewsets.ModelViewSet):
@@ -45,11 +60,39 @@ class CommentViewSet(viewsets.ModelViewSet):
 
     def perform_create(self, serializer):
         return serializer.save(
-            # author=self.request.user,
-            author=User.objects.get(pk=1),
+            author=self.request.user,
             review=get_object_or_404(
                 Review,
                 pk=self.kwargs['review_id'],
                 title=self.kwargs['title_id']
             )
         )
+
+
+class CategoryViewSet(viewsets.ModelsViewSet):
+    queryset = Category.objects.all()
+    serializer_class = CategorySerializer
+    permission_classes = (,)
+    filter_backends = (filters.SearchFilter,)
+
+
+class GenreViewSet(viewsets.ModelViewSet):
+    queryset = Genre.objects.all()
+    serializer_class = GenreSerializer
+    permission_classes = (,)
+    filter_backends = (filters.SearchFilter,)
+
+
+class TitleViewSet(viewsets.ModelViewSet):
+    queryset = Title.objects.annotate(
+        rating=Avg('reviews__score')
+    )
+    serializer_class = TitleSerializer
+    permission_classes = (,)
+    filter_backends = (DjangoFilterBackend,)
+    filter_class = TitleFilter
+
+    def get_serializer_class(self):
+        if self.request.method == 'GET':
+            return TitleGetSerializer
+        return TitleSerializer
