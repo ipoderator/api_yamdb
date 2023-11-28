@@ -22,12 +22,10 @@ class UserSerializer(serializers.ModelSerializer):
 class UserSignUpSerializer(serializers.ModelSerializer):
     email = serializers.EmailField(
         max_length=254,
-        unique=True,
         required=True
     )
     username = serializers.CharField(
         max_length=150,
-        unique=True,
         required=True,
         validators=([RegexValidator(regex=r"^[\w.@+-]+\Z")])
     )
@@ -47,15 +45,13 @@ class UserSignUpSerializer(serializers.ModelSerializer):
 class GetTokenSerializer(serializers.Serializer):
     username = serializers.CharField(
         max_length=150,
-        unique=True,
         required=True,
         validators=([RegexValidator(regex=r"^[\w.@+-]+\Z")])
     )
     confirmation_code = serializers.CharField(
         max_length=200,
-        blank=True,
-        null=True,
-        unique=True,
+        allow_blank=True,
+        allow_null=True,
         required=True
     )
 
