@@ -15,15 +15,6 @@ class ReviewViewSet(viewsets.ModelViewSet):
     """
 
     serializer_class = ReviewSerializer
-    http_methods_names = [
-        'get',
-        'post',
-        'patch',
-        'delete',
-        'head',
-        'options',
-        'trace'
-    ]
     # permission_classes = ()
 
     def get_queryset(self):
@@ -42,15 +33,6 @@ class CommentViewSet(viewsets.ModelViewSet):
     """
 
     serializer_class = CommentSerializer
-    http_methods_names = [
-        'get',
-        'post',
-        'patch',
-        'delete',
-        'head',
-        'options',
-        'trace'
-    ]
     # permission_classes = ()
 
     def get_queryset(self):
