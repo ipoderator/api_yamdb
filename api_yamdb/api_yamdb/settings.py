@@ -120,14 +120,14 @@ STATICFILES_DIRS = ((BASE_DIR / 'static/'),)
 STATIC_ROOT = BASE_DIR / '/home/ipoderator/api_yamdb/api_yamdb/static/data'
 
 REST_FRAMEWORK = {
-    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',    
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',   
+    
     "PAGE_SIZE": 10,
+    
     'DEFAULT_FILTER_BACKENDS': [
         'django_filters.rest_framework.DjangoFilterBackend'
     ]
-}
 
-REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.IsAuthenticated',
     ],
@@ -177,6 +177,6 @@ SIMPLE_JWT = {
     "SLIDING_TOKEN_REFRESH_SERIALIZER": "rest_framework_simplejwt.serializers.TokenRefreshSlidingSerializer",
 }
 
-EMAIL_BACKEND = 'django.core.mail.backends.<тип бэкенда>.EmailBackend'
+EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'
 EMAIL_FILE_PATH = BASE_DIR / 'sent_emails'
 DEFAULT_FROM_EMAIL = 'admin@12sprint.ru'
