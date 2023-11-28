@@ -8,6 +8,7 @@ from api.views import (
     ReviewViewSet,
     TitleViewSet
 )
+from users.views import UserViewSet, get_jwt_token_for_user, signup
 
 app_name = 'api-v1'
 
@@ -38,7 +39,14 @@ router_v1.register(
     CommentViewSet,
     'comment'
 )
+router_v1.register(
+    r'users',
+    UserViewSet,
+    basename='users'
+)
 
 urlpatterns = [
+    path('v1/auth/token/', get_jwt_token_for_user, name='token'),
+    path('v1/auth/signup/', signup),
     path('v1/', include(router_v1.urls)),
 ]
