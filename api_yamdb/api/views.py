@@ -1,7 +1,9 @@
 from django.db.models import Avg
 from django.shortcuts import get_object_or_404
 from django_filters.rest_framework import DjangoFilterBackend
-from rest_framework import filters, viewsets
+
+from rest_framework import filters, permissions, viewsets
+
 
 from api.filters import TitleFilter
 from api.serializers import (
@@ -14,11 +16,15 @@ from api.serializers import (
 )
 from reviews.models import (
     Category,
-    Comment,
     Genre,
     Review,
     Title
 )
+from api.permissions import (
+    IsAdminUserOrReadOnly,
+    IsAdminModeratorAuthorOrReadOnly
+)
+from .mixins import ListCreateDestroyViewSet
 
 
 class ReviewViewSet(viewsets.ModelViewSet):
@@ -31,7 +37,8 @@ class ReviewViewSet(viewsets.ModelViewSet):
     """
 
     serializer_class = ReviewSerializer
-    # permission_classes = ()
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly,
+                          IsAdminModeratorAuthorOrReadOnly)
 
     def get_queryset(self):
         title = get_object_or_404(Title, pk=self.kwargs['title_id'])
@@ -48,7 +55,8 @@ class CommentViewSet(viewsets.ModelViewSet):
     """
 
     serializer_class = CommentSerializer
-    # permission_classes = ()
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly,
+                          IsAdminModeratorAuthorOrReadOnly)
 
     def get_queryset(self):
         review = get_object_or_404(
@@ -69,17 +77,17 @@ class CommentViewSet(viewsets.ModelViewSet):
         )
 
 
-class CategoryViewSet(viewsets.ModelViewSet):
+class CategoryViewSet(ListCreateDestroyViewSet):
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
-    # permission_classes = ()
+    permission_classes = (IsAdminUserOrReadOnly,)
     filter_backends = (filters.SearchFilter,)
 
 
-class GenreViewSet(viewsets.ModelViewSet):
+class GenreViewSet(ListCreateDestroyViewSet):
     queryset = Genre.objects.all()
     serializer_class = GenreSerializer
-    # permission_classes = ()
+    permission_classes = (IsAdminUserOrReadOnly,)
     filter_backends = (filters.SearchFilter,)
 
 
@@ -88,7 +96,7 @@ class TitleViewSet(viewsets.ModelViewSet):
         rating=Avg('reviews__score')
     )
     serializer_class = TitleSerializer
-    # permission_classes = ()
+    permission_classes = (IsAdminUserOrReadOnly,)
     filter_backends = (DjangoFilterBackend,)
     filter_class = TitleFilter
 

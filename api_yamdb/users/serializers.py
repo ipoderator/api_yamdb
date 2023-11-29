@@ -19,7 +19,7 @@ class UserSerializer(serializers.ModelSerializer):
         )
 
 
-class UserSignUpSerializer(serializers.ModelSerializer):
+class UserSignUpSerializer(serializers.Serializer):
     email = serializers.EmailField(
         max_length=254,
         required=True
@@ -29,10 +29,6 @@ class UserSignUpSerializer(serializers.ModelSerializer):
         required=True,
         validators=([RegexValidator(regex=r"^[\w.@+-]+\Z")])
     )
-
-    class Meta:
-        model = User
-        fields = ('email', 'username')
 
     def validate(self, data):
         if data['username'] == 'me':
@@ -54,10 +50,6 @@ class GetTokenSerializer(serializers.Serializer):
         allow_null=True,
         required=True
     )
-
-    class Meta:
-        model = User
-        fields = ('confirmation_code', 'username')
 
     def validate(self, data):
         if not data['confirmation_code']:
