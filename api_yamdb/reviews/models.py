@@ -37,7 +37,9 @@ class Genre(models.Model):
     )
     slug = models.SlugField(
         unique=True,
-        max_length=50
+        max_length=50,
+        db_index=True
+
     )
 
     class Meta:
@@ -58,7 +60,7 @@ class Title(models.Model):
     )
     year = models.PositiveSmallIntegerField(
         verbose_name='Дата выхода',
-        validators=[now_year_validator],
+        validators=(now_year_validator, ),
     )
     description = models.TextField(
         verbose_name='Описание',

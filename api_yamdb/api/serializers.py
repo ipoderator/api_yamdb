@@ -41,9 +41,7 @@ class ReviewSerializer(serializers.ModelSerializer):
         )
 
     def validate(self, attrs):
-        """
-        Validate that `author` and `title` pair is not in DB.
-        """
+        """Validate that `author` and `title` pair is not in DB."""
         if self.context['request'].method == 'POST':
             author = self.context['request'].user
             title = self.context['request'].parser_context.get(
@@ -72,6 +70,7 @@ class GenreSerializer(serializers.ModelSerializer):
     class Meta:
         model = Genre
         exclude = ('id',)
+        lookup_field = 'slug'
 
 
 class TitleGetSerializer(serializers.ModelSerializer):
@@ -86,7 +85,6 @@ class TitleGetSerializer(serializers.ModelSerializer):
     )
     rating = serializers.IntegerField(
         read_only=True,
-        default=0
     )
 
     class Meta:
