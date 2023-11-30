@@ -1,5 +1,6 @@
 from django.db.models import Avg
 from django.shortcuts import get_object_or_404
+
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import filters, viewsets
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
@@ -103,6 +104,12 @@ class CommentViewSet(viewsets.ModelViewSet):
 
 
 class CategoryViewSet(ListCreateDestroyViewSet):
+    """
+    Category model ViewsSet.
+
+    Only the administrator can retrieve the data.
+    """
+
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
     permission_classes = (
@@ -114,6 +121,13 @@ class CategoryViewSet(ListCreateDestroyViewSet):
 
 
 class GenreViewSet(ListCreateDestroyViewSet):
+    """
+    Genre model ViewSet.
+
+    Only the administrator can retrieve the data.
+    The search is by name.
+    """
+
     queryset = Genre.objects.all()
     serializer_class = GenreSerializer
     permission_classes = (
@@ -127,9 +141,17 @@ class GenreViewSet(ListCreateDestroyViewSet):
 
 
 class TitleViewSet(viewsets.ModelViewSet):
+    """
+    Title model ViewSet.
+
+    We calculate the average rating and sort by name.
+    We did this so that there would be equal paganation.
+    Only the administrator can retrieve the data.
+    """
+
     queryset = Title.objects.annotate(
         rating=Avg('reviews__score')
-    )
+    ).order_by('name')
     serializer_class = TitleSerializer
     permission_classes = (
         IsAdminUserOrReadOnly,

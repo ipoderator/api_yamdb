@@ -6,6 +6,7 @@ User = get_user_model()
 
 
 class UserSerializer(serializers.ModelSerializer):
+    """Serializer for users."""
 
     class Meta:
         model = User
@@ -20,6 +21,8 @@ class UserSerializer(serializers.ModelSerializer):
 
 
 class UserSignUpSerializer(serializers.Serializer):
+    """Serializer for registration users."""
+
     email = serializers.EmailField(
         max_length=254,
         required=True
@@ -39,6 +42,8 @@ class UserSignUpSerializer(serializers.Serializer):
 
 
 class GetTokenSerializer(serializers.Serializer):
+    """Serializer to get token."""
+
     username = serializers.CharField(
         max_length=150,
         required=True,

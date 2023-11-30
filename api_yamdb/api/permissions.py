@@ -2,6 +2,7 @@ from rest_framework import permissions
 
 
 class IsAdmin(permissions.BasePermission):
+    """Available for administrators only."""
 
     def has_permission(self, request, view):
         return (request.user.is_authenticated
@@ -9,6 +10,7 @@ class IsAdmin(permissions.BasePermission):
 
 
 class IsAdminUserOrReadOnly(permissions.BasePermission):
+    """Read only for all users exept administrators."""
 
     def has_permission(self, request, view):
         return request.method in permissions.SAFE_METHODS or (
@@ -16,6 +18,11 @@ class IsAdminUserOrReadOnly(permissions.BasePermission):
 
 
 class IsAdminModeratorAuthorOrReadOnly(permissions.BasePermission):
+    """
+    Read only for all users exept administrators.
+
+    Moders and object author.
+    """
 
     def has_object_permission(self, request, view, obj):
         if request.method in permissions.SAFE_METHODS:

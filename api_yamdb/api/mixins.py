@@ -7,5 +7,7 @@ class ListCreateDestroyViewSet(
     mixins.DestroyModelMixin,
     viewsets.GenericViewSet
 ):
+    """Mixin for use Get, Create and Delete methods in Viewset."""
+
     lookup_field = 'slug'
     search_fields = ['name']
