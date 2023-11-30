@@ -8,13 +8,13 @@ from reviews.models import (
     Title,
     Review,
     Comment,
-    GenreTitle, 
+    GenreTitle,
     User
 )
 
 
 @admin.register(User)
-class UserAdmin(admin.ModelAdmin):
+class UserAdmin(ImportExportModelAdmin):
     list_display = (
         'username',
         'email',
@@ -44,8 +44,8 @@ class CategoryAdmin(ImportExportModelAdmin):
 class GenreAdmin(ImportExportModelAdmin):
     """Админка жанров"""
     list_display = (
-        'pk', 
-        'name', 
+        'pk',
+        'name',
         'slug',
     )
     search_fields = ('name',)
@@ -99,7 +99,6 @@ class CommentAdmin(ImportExportModelAdmin):
     search_fields = ('review', 'author', 'pub_date',)
     list_filter = ('pub_date',)
     empty_value_display = '-empty-'
-    
 
 
 @admin.register(GenreTitle)
@@ -107,11 +106,9 @@ class GenreTitleAdmin(ImportExportModelAdmin):
     """Админка прозведений и жанров"""
     list_display = (
         'pk',
-        'genre',
-        'title',
+        'genre_id',
+        'title_id',
     )
-    search_fields = ('title',)
-    list_filter = ('genre',)
+    search_fields = ('title_id',)
+    list_filter = ('genre_id',)
     empty_value_display = '-empty-'
-
-
