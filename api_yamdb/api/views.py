@@ -122,6 +122,8 @@ class GenreViewSet(ListCreateDestroyViewSet):
     filter_backends = (
         filters.SearchFilter,
     )
+    search_fields = ('name', )
+    lookup_field = 'slug'
 
 
 class TitleViewSet(viewsets.ModelViewSet):
@@ -144,7 +146,7 @@ class TitleViewSet(viewsets.ModelViewSet):
     filter_backends = (
         DjangoFilterBackend,
     )
-    filter_class = TitleFilter
+    filterset_class = TitleFilter
 
     def get_serializer_class(self):
         if self.request.method == 'GET':

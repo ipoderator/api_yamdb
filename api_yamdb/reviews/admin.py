@@ -42,7 +42,8 @@ class CategoryAdmin(ImportExportModelAdmin):
 
 @admin.register(Genre)
 class GenreAdmin(ImportExportModelAdmin):
-    """Админка жанров"""
+    """Админка жанров."""
+
     list_display = (
         'pk',
         'name',
@@ -55,7 +56,8 @@ class GenreAdmin(ImportExportModelAdmin):
 
 @admin.register(Title)
 class TitleAdmin(ImportExportModelAdmin):
-    """Админка произведений"""
+    """Админка произведений."""
+
     list_display = (
         'pk',
         'name',
@@ -64,7 +66,7 @@ class TitleAdmin(ImportExportModelAdmin):
         'category',
     )
     search_fields = ('name',)
-    list_filter = ('year', 'category', 'genre',)
+    list_filter = ('category',)
     empty_value_display = '-empty-'
     list_editable = ('category',)
     exclude = ('genre',)
@@ -72,7 +74,8 @@ class TitleAdmin(ImportExportModelAdmin):
 
 @admin.register(Review)
 class ReviewAdmin(ImportExportModelAdmin):
-    """Админка отзывов"""
+    """Админка отзывов."""
+
     list_display = (
         'pk',
         'title',
@@ -88,7 +91,8 @@ class ReviewAdmin(ImportExportModelAdmin):
 
 @admin.register(Comment)
 class CommentAdmin(ImportExportModelAdmin):
-    """Админка сомментариев"""
+    """Админка сомментариев."""
+
     list_display = (
         'pk',
         'review',
@@ -103,7 +107,8 @@ class CommentAdmin(ImportExportModelAdmin):
 
 @admin.register(GenreTitle)
 class GenreTitleAdmin(ImportExportModelAdmin):
-    """Админка прозведений и жанров"""
+    """Админка прозведений и жанров."""
+
     list_display = (
         'pk',
         'genre_id',

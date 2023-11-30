@@ -6,13 +6,13 @@ from reviews.models import Title
 class TitleFilter(filters.FilterSet):
     name = filters.CharFilter(
         field_name='name',
-        lookup_expr='nmcontains'
+        lookup_expr="contains"
     )
     category = filters.CharFilter(
         field_name='category__slug'
     )
     genre = filters.CharFilter(
-        field_name='genre__genre_id__slug'
+        field_name="genre__slug",
     )
 
     class Meta:
