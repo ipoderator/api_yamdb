@@ -5,6 +5,11 @@ from rest_framework import filters, mixins, viewsets
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
 
 from api.filters import TitleFilter
+from api.mixins import ListCreateDestroyViewSet
+from api.permissions import (
+    IsAdminUserOrReadOnly,
+    IsAdminModeratorAuthorOrReadOnly
+)
 from api.serializers import (
     CategorySerializer,
     CommentSerializer,
@@ -18,10 +23,6 @@ from reviews.models import (
     Genre,
     Review,
     Title
-)
-from users.permissions import (
-    IsAdminModeratorAuthorOrReadOnly,
-    IsAdminUserOrReadOnly
 )
 
 
@@ -101,32 +102,30 @@ class CommentViewSet(viewsets.ModelViewSet):
         )
 
 
-class CategoryViewSet(mixins.CreateModelMixin,
-                      mixins.DestroyModelMixin,
-                      mixins.ListModelMixin,
-                      viewsets.GenericViewSet):
+class CategoryViewSet(ListCreateDestroyViewSet):
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
     permission_classes = (
         IsAdminUserOrReadOnly,
     )
-    filter_backends = (filters.SearchFilter,)
+    filter_backends = (
+        filters.SearchFilter,
+    )
     search_fields = (
         'name',
     )
     lookup_field = 'slug'
 
 
-class GenreViewSet(mixins.CreateModelMixin,
-                   mixins.DestroyModelMixin,
-                   mixins.ListModelMixin,
-                   viewsets.GenericViewSet):
+class GenreViewSet(ListCreateDestroyViewSet):
     queryset = Genre.objects.all()
     serializer_class = GenreSerializer
     permission_classes = (
         IsAdminUserOrReadOnly,
     )
-    filter_backends = (filters.SearchFilter,)
+    filter_backends = (
+        filters.SearchFilter,
+    )
     lookup_field = 'slug'
     search_fields = (
         'name',
@@ -150,7 +149,9 @@ class TitleViewSet(viewsets.ModelViewSet):
         'options',
         'trace'
     )
-    filter_backends = (DjangoFilterBackend,)
+    filter_backends = (
+        DjangoFilterBackend,
+    )
     filter_class = TitleFilter
 
     def get_serializer_class(self):

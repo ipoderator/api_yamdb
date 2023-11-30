@@ -12,7 +12,7 @@ from rest_framework_simplejwt.tokens import AccessToken
 import secrets
 import string
 
-from users.permissions import IsAdmin
+from api.permissions import IsAdmin
 from users.serializers import (
     UserSerializer,
     UserSignUpSerializer,
@@ -23,8 +23,8 @@ User = get_user_model()
 
 
 class UserViewSet(viewsets.ModelViewSet):
-    queryset = User.objects.all()
     serializer_class = UserSerializer
+    queryset = User.objects.all()
     permission_classes = [IsAdmin]
     lookup_field = 'username'
     http_method_names = (
@@ -52,7 +52,7 @@ class UserViewSet(viewsets.ModelViewSet):
             partial=True
         )
         serializer.is_valid(raise_exception=True)
-        serializer.save()
+        serializer.save(role=request.user.role, partial=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 
