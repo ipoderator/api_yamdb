@@ -1,7 +1,7 @@
 from django.db.models import Avg
 from django.shortcuts import get_object_or_404
 from django_filters.rest_framework import DjangoFilterBackend
-from rest_framework import filters, mixins, viewsets
+from rest_framework import filters, viewsets
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
 
 from api.filters import TitleFilter
@@ -111,10 +111,6 @@ class CategoryViewSet(ListCreateDestroyViewSet):
     filter_backends = (
         filters.SearchFilter,
     )
-    search_fields = (
-        'name',
-    )
-    lookup_field = 'slug'
 
 
 class GenreViewSet(ListCreateDestroyViewSet):
@@ -125,10 +121,6 @@ class GenreViewSet(ListCreateDestroyViewSet):
     )
     filter_backends = (
         filters.SearchFilter,
-    )
-    lookup_field = 'slug'
-    search_fields = (
-        'name',
     )
 
 

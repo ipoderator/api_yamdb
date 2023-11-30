@@ -10,7 +10,7 @@ from api.views import (
 )
 from users.views import UserViewSet, get_jwt_token_for_user, signup
 
-app_name = 'api'
+app_name = 'api-v1'
 
 router_v1 = routers.DefaultRouter()
 
