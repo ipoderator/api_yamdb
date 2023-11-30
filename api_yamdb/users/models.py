@@ -43,6 +43,11 @@ class CustomUser(AbstractUser):
         verbose_name='Код подтверждения'
     )
 
+    class Meta:
+        ordering = (
+            'username',
+        )
+
     @property
     def is_admin(self):
         return self.role == self.ADMIN or self.is_superuser
