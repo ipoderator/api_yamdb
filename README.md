@@ -1,5 +1,5 @@
 
-### :writing_hand: YaMDb- Командный проект  YandexPracticum:
+### YaMDb- Командный проект  YandexPracticum:
 
 
 ### Проект YaMDb собирает **отзывы** пользователей на **произведения**. Сами произведения в YaMDb не хранятся, здесь нельзя посмотреть фильм или послушать музыку.
@@ -26,7 +26,7 @@
 
 	[![Top Langs](https://github-readme-stats.vercel.app/api/top-langs/?username=ipoderator&layout=compact&theme=vision-friendly-dark)](https://github.com/anuraghazra/github-readme-stats)
 
-### :woman_technologist: Авторы:
+### Авторы:
 <div id="header" align="center">  <img src="https://media.giphy.com/media/M9gbBd9nbDrOTu1Mqx/giphy.gif" width="100"/>  </div>
 
 - [Алексей Мелентьев](https://github.com/alexeymelentev) - отвечал за систему регистрации и аутентификации, права доступа, работу с токенами и систему подтверждения через e-mail.
