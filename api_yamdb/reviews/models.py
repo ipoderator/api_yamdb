@@ -22,9 +22,7 @@ class Category(models.Model):
     class Meta:
         verbose_name = 'Категория'
         verbose_name_plural = 'Категории'
-        ordering = (
-            'name',
-        )
+        ordering = ('name',)
 
     def __str__(self) -> str:
         return self.name[:LENGTH_CHAR]
@@ -45,9 +43,7 @@ class Genre(models.Model):
     class Meta:
         verbose_name = 'Жанр'
         verbose_name_plural = 'Жанры'
-        ordering = (
-            'name',
-        )
+        ordering = ('name',)
 
     def __str__(self):
         return self.name[:LENGTH_CHAR]
@@ -107,6 +103,7 @@ class GenreTitle(models.Model):
     class Meta:
         verbose_name = 'Произведение и жанры'
         verbose_name_plural = 'Произведения и жанры'
+        unique_together = ('title_id', 'genre_id')
 
     def __str__(self):
         return f'{self.title_id}, {self.genre_id}'
@@ -161,9 +158,7 @@ class Review(models.Model):
                 name='unique_author_title'
             )
         ]
-        ordering = (
-            '-pub_date',
-        )
+        ordering = ('-pub_date',)
         verbose_name = 'Отзыв'
         verbose_name_plural = 'Отзывы'
 
@@ -205,9 +200,7 @@ class Comment(models.Model):
     )
 
     class Meta:
-        ordering = (
-            '-pub_date',
-        )
+        ordering = ('-pub_date',)
         verbose_name = 'Комментарий'
         verbose_name_plural = 'Комментарии'
 
