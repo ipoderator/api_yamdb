@@ -10,4 +10,3 @@ def now_year_validator(year):
             code='invalid',
             params={'year': year},
         )
-    return year
