@@ -12,7 +12,15 @@ from users.views import UserViewSet, get_jwt_token_for_user, signup
 
 app_name = 'api-v1'
 
-router_v1 = routers.DefaultRouter()
+
+class NoPutRouter(routers.DefaultRouter):
+    def get_method_map(self, viewset, method_map):
+        bound_methods = super().get_method_map(viewset, method_map)
+        bound_methods.pop('put', None)
+        return bound_methods
+
+
+router_v1 = NoPutRouter()
 
 router_v1.register(
     r'categories',
