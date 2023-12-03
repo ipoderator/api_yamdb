@@ -1,5 +1,7 @@
 from rest_framework import permissions
 
+from api.utils import HTTPMethods
+
 
 class IsAdmin(permissions.BasePermission):
     """Available for administrators only."""
@@ -25,12 +27,9 @@ class IsAdminModeratorAuthorOrReadOnly(permissions.BasePermission):
     """
 
     def has_object_permission(self, request, view, obj):
-        if request.method in permissions.SAFE_METHODS:
-            return True
-        if request.method == 'POST':
-            return request.request.user.is_authenticated
-        return (request.user.is_authenticated and (
-            request.user == obj.author
-            or request.user.is_moderator
-            or request.user.is_admin
-        ))
+        return (request.method in permissions.SAFE_METHODS
+                or request.user.is_authenticated
+                and (request.method == HTTPMethods.POST
+                     or request.user == obj.author
+                     or request.user.is_moderator
+                     or request.user.is_admin))

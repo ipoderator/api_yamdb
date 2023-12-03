@@ -1,5 +1,6 @@
 from rest_framework import serializers
 
+from api.utils import HTTPMethods
 from reviews.models import (
     Category,
     Comment,
@@ -42,14 +43,14 @@ class ReviewSerializer(serializers.ModelSerializer):
 
     def validate(self, attrs):
         """Validate that `author` and `title` pair is not in DB."""
-        if self.context['request'].method == 'POST':
+        if self.context['request'].method == HTTPMethods.POST:
             author = self.context['request'].user
             title = self.context['request'].parser_context.get(
                 'kwargs').get('title_id')
             if Review.objects.filter(
                 author=author,
                 title=title
-            ):
+            ).exists():
                 raise serializers.ValidationError(
                     'User can have only one review for a single title.'
                 )

@@ -1,23 +1,23 @@
+import secrets
+import string
+
 from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.core.mail import send_mail
 from django.shortcuts import get_object_or_404
 from django.db import IntegrityError
-
 from rest_framework import filters, permissions, status, viewsets
 from rest_framework.decorators import action, api_view, permission_classes
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework_simplejwt.tokens import AccessToken
 
-import secrets
-import string
-
 from api.permissions import IsAdmin
+from api.utils import HTTPMethods
 from users.serializers import (
     UserSerializer,
     UserSignUpSerializer,
-    GetTokenSerializer
+    GetTokenSerializer,
 )
 
 User = get_user_model()
@@ -32,15 +32,6 @@ class UserViewSet(viewsets.ModelViewSet):
         IsAdmin,
     )
     lookup_field = 'username'
-    http_method_names = (
-        'get',
-        'post',
-        'patch',
-        'delete',
-        'head',
-        'options',
-        'trace'
-    )
     filter_backends = (
         filters.SearchFilter,
     )
@@ -49,12 +40,12 @@ class UserViewSet(viewsets.ModelViewSet):
     )
 
     @action(
-        methods=['patch', 'get'],
+        methods=[HTTPMethods.PATCH, HTTPMethods.GET],
         detail=False,
         permission_classes=[permissions.IsAuthenticated]
     )
     def me(self, request):
-        if request.method == 'GET':
+        if request.method == HTTPMethods.GET:
             serializer = UserSerializer(self.request.user)
             return Response(serializer.data, status=status.HTTP_200_OK)
         serializer = UserSerializer(
@@ -67,7 +58,7 @@ class UserViewSet(viewsets.ModelViewSet):
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 
-@api_view(['POST'])
+@api_view([HTTPMethods.POST])
 @permission_classes([AllowAny])
 def signup(request):
     serializer = UserSignUpSerializer(data=request.data)
@@ -100,7 +91,7 @@ def signup(request):
     )
 
 
-@api_view(['POST'])
+@api_view([HTTPMethods.POST])
 @permission_classes([AllowAny])
 def get_jwt_token_for_user(request):
     """View function to get token for user."""
